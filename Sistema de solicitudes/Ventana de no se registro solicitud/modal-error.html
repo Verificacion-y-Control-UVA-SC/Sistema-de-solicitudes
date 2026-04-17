@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error en Solicitud</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="modal-error.css">
+</head>
+<body>
+
+    <!-- Botón de demostración para abrir el modal -->
+    <button class="btn-abrir-modal-error" id="btnAbrirModalError">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        Simular Error
+    </button>
+
+    <!-- Overlay + Modal Error -->
+    <div class="modal-error-overlay" id="modalErrorOverlay">
+        <div class="modal-error">
+            <!-- Barra de progreso animada -->
+            <div class="modal-error-progress-bar"></div>
+
+            <!-- Header -->
+            <div class="modal-error-header">
+                <div class="modal-error-header-titulo">
+                    <span class="icono-warning">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                        </svg>
+                        <span class="warning-ring"></span>
+                    </span>
+                    No se registró la Solicitud
+                </div>
+                <button class="btn-cerrar-x-error" id="btnCerrarXError" aria-label="Cerrar">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-error-body">
+                <div class="error-icon-container">
+                    <div class="error-circle">
+                        <svg class="error-svg" viewBox="0 0 52 52">
+                            <circle class="error-circle-bg" cx="26" cy="26" r="24"/>
+                            <line class="error-x-line1" x1="16" y1="16" x2="36" y2="36"/>
+                            <line class="error-x-line2" x1="36" y1="16" x2="16" y2="36"/>
+                        </svg>
+                    </div>
+                </div>
+                <p class="error-titulo">Para Artículos Deportivos Decathlon los Folios de Solicitud son obligatorios. Debes cargar el layout Excel con la columna Folio de Solicitud llena.</p>
+                <p class="error-detalle">Revisa el detalle indicado y vuelve a intentarlo.</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-error-footer">
+                <button class="btn-cerrar-error" id="btnCerrarError">
+                    Cerrar
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="modal-error.js"></script>
+</body>
+</html>

@@ -1,0 +1,358 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Botón para abrir el modal (demo) */
+.btn-abrir-modal-error {
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #e04950, #c93a40);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(201, 58, 64, 0.3);
+    letter-spacing: 0.01em;
+}
+
+.btn-abrir-modal-error:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(201, 58, 64, 0.4);
+}
+
+.btn-abrir-modal-error:active {
+    transform: translateY(0);
+}
+
+/* Overlay */
+.modal-error-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.5s ease, backdrop-filter 0.5s ease;
+}
+
+.modal-error-overlay.active {
+    display: flex;
+}
+
+.modal-error-overlay.visible {
+    background-color: rgba(20, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* Contenedor del modal */
+.modal-error {
+    background: linear-gradient(145deg, #e04950, #df6969);
+    backdrop-filter: blur(24px) saturate(1.6);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    width: 520px;
+    max-width: 92%;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 80px rgba(201, 58, 64, 0.12);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(40px) scale(0.92);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+}
+
+.modal-error-overlay.visible .modal-error {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Shimmer decorativo */
+.modal-error::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+        105deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.04) 45%,
+        rgba(255, 255, 255, 0.08) 50%,
+        rgba(255, 255, 255, 0.04) 55%,
+        transparent 60%
+    );
+    pointer-events: none;
+    animation: shimmerError 3s ease-in-out infinite;
+}
+
+@keyframes shimmerError {
+    0% { transform: translateX(-30%); }
+    100% { transform: translateX(30%); }
+}
+
+/* Barra de progreso animada */
+.modal-error-progress-bar {
+    height: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-error-progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.5), #fff);
+    border-radius: 0 2px 2px 0;
+    animation: progressFillError 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+}
+
+@keyframes progressFillError {
+    to { width: 100%; }
+}
+
+/* Header del modal */
+.modal-error-header {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #fff;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.modal-error-header-titulo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.modal-error-header-titulo .icono-warning {
+    width: 28px;
+    height: 28px;
+    background-color: rgba(255, 220, 80, 0.95);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-error-header-titulo .icono-warning .warning-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    border: 2px solid rgba(201, 58, 64, 0.3);
+    animation: ringPulseError 2s ease-in-out infinite;
+}
+
+@keyframes ringPulseError {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.08); }
+}
+
+.modal-error-header-titulo .icono-warning svg {
+    width: 18px;
+    height: 18px;
+    fill: #a83232;
+    position: relative;
+    z-index: 1;
+}
+
+.modal-error .btn-cerrar-x-error {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-error .btn-cerrar-x-error:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.modal-error .btn-cerrar-x-error svg {
+    pointer-events: none;
+}
+
+/* Body del modal */
+.modal-error-body {
+    padding: 28px 26px 20px;
+    position: relative;
+}
+
+/* Ícono de error animado */
+.error-icon-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.error-circle {
+    width: 56px;
+    height: 56px;
+    position: relative;
+}
+
+.error-svg {
+    width: 56px;
+    height: 56px;
+}
+
+.error-circle-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.25);
+    stroke-width: 2;
+    stroke-dasharray: 151;
+    stroke-dashoffset: 151;
+    animation: circleInError 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+}
+
+@keyframes circleInError {
+    to { stroke-dashoffset: 0; }
+}
+
+.error-x-line1,
+.error-x-line2 {
+    stroke: #fff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 20;
+    stroke-dashoffset: 20;
+}
+
+.error-x-line1 {
+    animation: xLineIn 0.4s cubic-bezier(0.65, 0, 0.35, 1) 0.7s forwards;
+}
+
+.error-x-line2 {
+    animation: xLineIn 0.4s cubic-bezier(0.65, 0, 0.35, 1) 0.85s forwards;
+}
+
+@keyframes xLineIn {
+    to { stroke-dashoffset: 0; }
+}
+
+.modal-error-body .error-titulo {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUpError 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+}
+
+.modal-error-body .error-detalle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUpError 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1.05s forwards;
+}
+
+@keyframes fadeUpError {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Footer del modal */
+.modal-error-footer {
+    padding: 16px 22px 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-cerrar-error {
+    padding: 10px 28px;
+    background-color: rgba(30, 30, 30, 0.92);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.01em;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeUpError 0.4s cubic-bezier(0.16, 1, 0.3, 1) 1.15s forwards;
+}
+
+.btn-cerrar-error svg {
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.btn-cerrar-error:hover {
+    background-color: rgba(45, 45, 45, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-cerrar-error:hover svg {
+    opacity: 1;
+}
+
+.btn-cerrar-error:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}

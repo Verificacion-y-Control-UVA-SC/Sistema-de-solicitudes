@@ -1,0 +1,362 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Botón para abrir el modal (demo) */
+.btn-abrir-modal-layout {
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #e8863a, #d4712b);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(212, 113, 43, 0.3);
+    letter-spacing: 0.01em;
+}
+
+.btn-abrir-modal-layout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 113, 43, 0.4);
+}
+
+.btn-abrir-modal-layout:active {
+    transform: translateY(0);
+}
+
+/* Overlay */
+.modal-layout-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.5s ease, backdrop-filter 0.5s ease;
+}
+
+.modal-layout-overlay.active {
+    display: flex;
+}
+
+.modal-layout-overlay.visible {
+    background-color: rgba(20, 10, 0, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* Contenedor del modal */
+.modal-layout {
+    background: linear-gradient(145deg, #e8863a, #d4712b);
+    backdrop-filter: blur(24px) saturate(1.6);
+    -webkit-backdrop-filter: blur(24px) saturate(1.6);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    width: 520px;
+    max-width: 92%;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 80px rgba(212, 113, 43, 0.12);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(40px) scale(0.92);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+}
+
+.modal-layout-overlay.visible .modal-layout {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Shimmer decorativo */
+.modal-layout::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+        105deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.04) 45%,
+        rgba(255, 255, 255, 0.08) 50%,
+        rgba(255, 255, 255, 0.04) 55%,
+        transparent 60%
+    );
+    pointer-events: none;
+    animation: shimmerLayout 3s ease-in-out infinite;
+}
+
+@keyframes shimmerLayout {
+    0% { transform: translateX(-30%); }
+    100% { transform: translateX(30%); }
+}
+
+/* Barra de progreso animada */
+.modal-layout-progress-bar {
+    height: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-layout-progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.5), #fff);
+    border-radius: 0 2px 2px 0;
+    animation: progressFillLayout 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+}
+
+@keyframes progressFillLayout {
+    to { width: 100%; }
+}
+
+/* Header del modal */
+.modal-layout-header {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #fff;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.modal-layout-header-titulo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.modal-layout-header-titulo .icono-update {
+    width: 28px;
+    height: 28px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-layout-header-titulo .icono-update .update-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    border: 2px solid rgba(212, 113, 43, 0.3);
+    animation: ringPulseLayout 2s ease-in-out infinite;
+}
+
+@keyframes ringPulseLayout {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.08); }
+}
+
+.modal-layout-header-titulo .icono-update svg {
+    width: 16px;
+    height: 16px;
+    fill: #d4712b;
+    position: relative;
+    z-index: 1;
+}
+
+.modal-layout .btn-cerrar-x-layout {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-layout .btn-cerrar-x-layout:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+.modal-layout .btn-cerrar-x-layout svg {
+    pointer-events: none;
+}
+
+/* Body del modal */
+.modal-layout-body {
+    padding: 28px 26px 20px;
+    position: relative;
+}
+
+/* Ícono de actualización animado */
+.layout-icon-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.layout-circle {
+    width: 56px;
+    height: 56px;
+    position: relative;
+}
+
+.layout-svg {
+    width: 56px;
+    height: 56px;
+}
+
+.layout-circle-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.25);
+    stroke-width: 2;
+    stroke-dasharray: 151;
+    stroke-dashoffset: 151;
+    animation: circleInLayout 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+}
+
+@keyframes circleInLayout {
+    to { stroke-dashoffset: 0; }
+}
+
+.layout-info-icon {
+    stroke: #fff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+    animation: infoLineIn 0.5s cubic-bezier(0.65, 0, 0.35, 1) 0.7s forwards;
+}
+
+.layout-info-dot {
+    fill: #fff;
+    opacity: 0;
+    animation: infoDotIn 0.3s cubic-bezier(0.65, 0, 0.35, 1) 1s forwards;
+}
+
+@keyframes infoLineIn {
+    to { stroke-dashoffset: 0; }
+}
+
+@keyframes infoDotIn {
+    to { opacity: 1; }
+}
+
+.modal-layout-body .layout-titulo {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    line-height: 1.55;
+    text-align: center;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUpLayout 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+}
+
+.modal-layout-body .layout-detalle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUpLayout 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1.05s forwards;
+}
+
+@keyframes fadeUpLayout {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Footer del modal */
+.modal-layout-footer {
+    padding: 16px 22px 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-aceptar-layout {
+    padding: 10px 28px;
+    background-color: rgba(30, 30, 30, 0.92);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.01em;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeUpLayout 0.4s cubic-bezier(0.16, 1, 0.3, 1) 1.15s forwards;
+}
+
+.btn-aceptar-layout svg {
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.btn-aceptar-layout:hover {
+    background-color: rgba(45, 45, 45, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-aceptar-layout:hover svg {
+    opacity: 1;
+}
+
+.btn-aceptar-layout:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}

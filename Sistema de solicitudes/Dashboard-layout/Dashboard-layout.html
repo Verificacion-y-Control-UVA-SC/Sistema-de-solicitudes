@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Layout</title>
+<style>
+body { font-family: Arial, sans-serif; background: #f5f6f8; margin: 0; }
+
+/* NAVBAR MEJORADA */
+.navbar {
+  background: #d8d8d8;
+  color: #282828;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.nav-left span {
+  margin-right: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.85;
+}
+.nav-left span:hover { opacity: 1; }
+.nav-left span:first-child { font-weight: bold; font-size: 16px; }
+.nav-right { font-size: 13px; opacity: 0.9; }
+
+.container { padding: 20px; }
+
+h1 { margin-bottom: 5px; }
+
+.toolbar { display: flex; justify-content: space-between; margin-bottom: 15px; }
+.btn-primary {
+  background: #282828;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-primary:hover { background: #1a1a1a; }
+
+/* FILTROS */
+.filters {
+  background: #fff;
+  padding: 15px;
+  border-radius: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.filters input, .filters select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: 0.2s;
+}
+.filters input:focus, .filters select:focus {
+  outline: none;
+  border-color: #282828;
+}
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.filter-group label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+}
+
+/* BOTONES MEJORADOS */
+.btn-clean {
+  background: transparent;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  color: #282828;
+  font-weight: 500;
+}
+.btn-clean:hover {
+  background: red;
+  color: #ffffff;
+}
+
+.btn-excel {
+  background: linear-gradient(135deg, #1f8f5f, #27ae60);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: 0.2s;
+}
+.btn-excel:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+.table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: visible; }
+.table th, .table td { padding: 10px; text-align: left; font-size: 13px; }
+.table th { background: #f0f0f0; }
+.table tr:hover { background: #fafafa; }
+
+/* Línea tenue entre registros */
+.table tbody tr {
+  border-bottom: 1px solid #ececec;
+}
+
+.badge { padding: 4px 8px; border-radius: 20px; font-size: 11px; margin-right: 4px; }
+.badge-blue { background: #e7f0ff; color: #2d6cdf; }
+.badge-green { background: #e8f7ee; color: #2e8b57; }
+.badge-gray { background: #eee; color: #666; }
+
+.actions { display: flex; gap: 6px; }
+.icon-btn { border: none; background: #f1f1f1; padding: 6px 8px; border-radius: 8px; cursor: pointer; }
+
+.menu { position: relative; }
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+.dropdown button { display: block; width: 100%; padding: 10px; border: none; background: none; text-align: left; cursor: pointer; }
+.menu .dropdown { display: none; }
+.menu.open .dropdown { display: block; }
+
+.docs-cell { display: flex; gap: 6px; justify-content: center; align-items: center; }
+.btn-zip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #4d4d4d;
+  border: 1px solid #d8d8d8;
+  padding: 7px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-zip:hover {
+  background: rgba(0,0,0,0.05);
+  color: #282828;
+  border-color: #282828;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.btn-zip:active {
+  transform: scale(0.96);
+}
+.btn-zip svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+
+.folio { padding: 8px; border-radius: 6px; font-weight: bold; }
+.folio-ingreso { background: #F6DF06; color: #282828; }
+.folio-corte { background: #F6DF06; color: #282828; }
+.folio-enviado { background: #FFA832; color: #282828; }
+.folio-validado { background: #008D53; color: #fff; }
+.folio-sin-estatus { background: #D8D8D8; color: #282828; }
+.folio-cancelado { background: #FF0000; color: #fff; }
+.folio-reactivado { background: #BCDFE3; color: #282828; }
+
+.email-indicator { font-size: 12px; margin-left: 4px; color: #2d6cdf; cursor: default; }
+.email-indicator[title] { position: relative; }
+.small { font-size: 11px; color:#777; }
+.center { text-align:center; }
+
+/* SIMBOLOGÍA */
+.simbologia {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 10px 15px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  font-size: 12px;
+}
+.simbologia-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.simbologia-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.simbologia-label { font-weight: bold; margin-right: 8px; font-size: 13px; color: #444; }
+
+/* BOTÓN BASE */
+.btn-toggle-simbologia {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  color: #282828;
+  border: 1px solid #d8d8d8;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* HOVER (flota y cambia color) */
+.btn-toggle-simbologia:hover {
+  background: #282828;
+  color: #ffffff;
+  border-color: #282828;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+}
+
+/* CLICK (efecto presión) */
+.btn-toggle-simbologia:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* ESTADO ACTIVO */
+.btn-toggle-simbologia.active {
+  background: #282828;
+  color: #ffffff;
+  border-color: #282828;
+}
+
+/* ICONO */
+.btn-toggle-simbologia .icon {
+  transition: transform 0.4s ease;
+}
+
+/* GIRO DEL ICONO */
+.btn-toggle-simbologia.active .icon {
+  transform: rotate(180deg) scale(1.1);
+}
+
+/* TEXTO SUAVE */
+.btn-toggle-simbologia .text {
+  transition: opacity 0.2s ease;
+}
+/* MODAL DETALLE */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+}
+.modal-overlay.active { display: flex; }
+.modal-detalle {
+  background: #fff;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 1100px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+}
+.modal-header {
+  background: linear-gradient(135deg, #ecd925, #d4c220);
+  color: #282828;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+.modal-header .close-modal {
+  background: none; border: none; color: #282828;
+  font-size: 24px; cursor: pointer; opacity: 0.8;
+  transition: 0.2s;
+}
+.modal-header .close-modal:hover { opacity: 1; }
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+}
+.detalle-card {
+  background: linear-gradient(135deg, #fdf9e0, #faf4c8);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.detalle-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.detalle-card-header h3 { margin: 0; font-size: 13px; color: #555; text-transform: uppercase; }
+.detalle-card-header h2 { margin: 4px 0 0; font-size: 18px; color: #222; }
+.detalle-card-header .badge-partidas {
+  background: #fff;
+  border: 1px solid #ecd925;
+  color: #b8a400;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.detalle-info {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.detalle-info-item {
+  flex: 1;
+  min-width: 150px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 16px;
+  border: 1px solid #f0e9a0;
+}
+.detalle-info-item label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.detalle-info-item span {
+  font-size: 15px;
+  font-weight: bold;
+  color: #222;
+}
+.partidas-section {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  padding: 16px;
+}
+.partidas-section h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  color: #333;
+}
+.partidas-section .partidas-hint {
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 12px;
+  text-align: right;
+}
+.partidas-wrapper {
+  overflow-x: auto;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.partidas-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.partidas-table th {
+  background: #ecd925;
+  color: #282828;
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+}
+.partidas-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;
+}
+.partidas-table tr:hover td { background: #fdfbe8; }
+.partidas-table .badge-activo {
+  background: #e8f7ee;
+  color: #2e8b57;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.partidas-table .badge-cancelado {
+  background: #ffeaea;
+  color: #e53935;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.partidas-count {
+  text-align: right;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #666;
+}
+.modal-footer {
+  padding: 14px 24px;
+  text-align: right;
+  border-top: 1px solid #eee;
+}
+.btn-cerrar-modal {
+  background: #282828;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+.btn-cerrar-modal:hover { background: #1a1a1a; }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left">
+    <span><b>V&C</b></span>
+    <span>Catálogos</span>
+    <span>Solicitudes</span>
+    <span>Visitas</span>
+    <span>Satelitales</span>
+    <span>Procesos Internos</span>
+  </div>
+  <div class="nav-right">
+    Arturo Flores Gómez | Cerrar sesión
+  </div>
+</div>
+
+<div class="container">
+  <h1>Dashboard Layout</h1>
+
+  <div class="toolbar">
+    <div>Mostrando: 46</div>
+    <div>
+      <button class="btn-primary">+ Nueva Solicitud</button>
+      <button class="btn-primary">+ Constancia</button>
+    </div>
+  </div>
+
+  <div style="margin-bottom: 18px;">
+    <button class="btn-toggle-simbologia" id="btnToggleSimbologia" onclick="toggleSimbologia(this)">
+      <span class="icon">👁️</span>
+      <span class="text">Simbología</span>
+    </button>
+    <div class="simbologia" id="simbologiaBlock" style="margin-top: 10px;">
+      <span class="simbologia-label">Simbología:</span>
+      <div class="simbologia-item"><span class="simbologia-color" style="background:#F6DF06;"></span> Ingreso</div>
+      <div class="simbologia-item"><span class="simbologia-color" style="background:#F6DF06;"></span> Corte</div>
+      <div class="simbologia-item"><span class="simbologia-color" style="background:#FFA832;"></span> Enviado a Sec. Economía</div>
+      <div class="simbologia-item"><span class="simbologia-color" style="background:#008D53;"></span> Validado</div>
+      <div class="simbologia-item"><span class="simbologia-color" style="background:#D8D8D8;"></span> Sin Estatus</div>
+      <div class="simbologia-item"><span class="simbologia-color" style="background:#FF0000;"></span> Cancelado</div>
+      <div class="simbologia-item"><span class="simbologia-color" style="background:#BCDFE3;"></span> Reactivado</div>
+    </div>
+  </div>
+  <div class="filters">
+    <div class="filter-group">
+      <label>Cliente</label>
+      <select style="min-width: 200px;" id="filtroCliente" onchange="filtrarTabla()"><option value="">-- Todos --</option></select>
+    </div>
+    <div class="filter-group">
+      <label>Folio</label>
+      <input placeholder="Ej: 002419" id="filtroFolio" maxlength="6" oninput="this.value=this.value.replace(/[^0-9]/g,''); filtrarTabla()">
+    </div>
+    <div class="filter-group">
+      <label>Pedimento</label>
+      <input placeholder="Pedimento" id="filtroPedimento" oninput="filtrarTabla()">
+    </div>
+    <div class="filter-group">
+      <label>Fecha inicio</label>
+      <input type="date" id="filtroFechaDesde" onchange="filtrarTabla()">
+    </div>
+    <div class="filter-group">
+      <label>Fecha final</label>
+      <input type="date" id="filtroFechaHasta" onchange="filtrarTabla()">
+    </div>
+    <div class="filter-group">
+      <label>Estado del folio</label>
+      <select id="filtroEstatus" onchange="filtrarTabla()">
+        <option value="">-- Todos --</option>
+        <option value="00">00 - Folio en Ingreso</option>
+        <option value="01">01 - Folio en Corte</option>
+        <option value="02">02 - Folio Enviado a Sec. Economía</option>
+        <option value="03">03 - Folio Validado</option>
+        <option value="04">04 - Folio sin Estatus</option>
+        <option value="05">05 - Folio Cancelado</option>
+        <option value="06">06 - Folio Reactivado</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Filas</label>
+      <select id="filtroRegistros" onchange="filtrarTabla()"><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="50">50</option><option value="all">Todas</option></select>
+    </div>
+    <div class="filter-group" style="justify-content: flex-end;">
+      <button class="btn-clean" onclick="limpiarFiltros()">Limpiar</button>
+    </div>
+    <div class="filter-group" style="justify-content: flex-end;">
+      <button class="btn-excel">Excel de la lista</button>
+    </div>
+  </div>
+
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Folio</th>
+        <th>Fecha</th>
+        <th>Usuario</th>
+        <th>Cliente</th>
+        <th>Pedimento</th>
+        <th>Factura</th>
+        <th class="center">Documentación</th>
+        <th>Solicitud</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- FILAS DE PRUEBA -->
+      <script>
+        const estatusConfig = [
+          { code: '00', class: 'folio-ingreso', label: 'Ingreso' },
+          { code: '01', class: 'folio-corte', label: 'Corte' },
+          { code: '02', class: 'folio-enviado', label: 'Enviado' },
+          { code: '03', class: 'folio-validado', label: 'Validado' },
+          { code: '04', class: 'folio-sin-estatus', label: 'Sin Estatus' },
+          { code: '05', class: 'folio-cancelado', label: 'Cancelado' },
+          { code: '06', class: 'folio-reactivado', label: 'Reactivado' }
+        ];
+
+        const tbody = document.currentScript.parentElement;
+        for(let i=0;i<15;i++){
+          const est = estatusConfig[i % 7];
+          const correoEnviado = i % 3 === 0;
+          const row = `
+          <tr data-estatus="${est.code}">
+            <td><span class="folio ${est.class}">${String(2419-i).padStart(6,'0')}</span></td>
+            <td>10/04/2026<br><span class="small">14:${i}0</span></td>
+            <td><span class="badge badge-gray">user${i}</span></td>
+            <td>EMPRESA DEMO</td>
+            <td>12345${i}</td>
+            <td>FAC-${String(1000+i)}</td>
+            <td class="center docs-cell">
+              <button class="btn-zip" onclick="descargarZIP(${i})" title="Descargar documentación">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM6 20V4h7v5h5v11H6zm5-5.5v3l-2-2h1.5V13h1v2.5H13l-2 2z"/></svg>
+              </button>
+            </td>
+            <td>
+              <span class="badge badge-blue">Sol</span>
+              <span class="badge badge-green">Lay</span>
+              <span class="badge badge-blue" style="cursor:pointer;" onclick="abrirDetalle(${i})">Det</span>
+            </td>
+            <td class="actions">
+              <div class="menu">
+                <button class="icon-btn menu-trigger" title="Opciones">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3.5"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                  </svg>
+                </button>
+                <button class="icon-btn" title="Editar">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.232 5.232l3.536 3.536M4 20h4.586a1 1 0 0 0 .707-.293l9.414-9.414a2 2 0 0 0 0-2.828l-2.172-2.172a2 2 0 0 0-2.828 0l-9.414 9.414A1 1 0 0 0 4 20z"/></svg>
+                </button>
+                <div class="dropdown">
+                  <button>📄 Ver historial</button>
+                  <button>📧 Enviar correo</button>
+                  <button style="color:red;">🚫 Cancelar folio</button>
+                </div>
+              </div>
+            </td>
+          </tr>`;
+          tbody.insertAdjacentHTML('beforeend', row);
+        }
+      </script>
+    </tbody>
+  </table>
+</div>
+
+<!-- MODAL DETALLE -->
+<div class="modal-overlay" id="modalDetalle">
+  <div class="modal-detalle">
+    <div class="modal-header">
+      <span id="modalTitulo">Detalle del folio</span>
+      <button class="close-modal" onclick="cerrarDetalle()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="detalle-card">
+        <div class="detalle-card-header">
+          <div>
+            <h2>Información del folio</h2>
+          </div>
+        </div>
+      </div>
+      <div class="partidas-section">
+        <div class="partidas-wrapper">
+          <table class="partidas-table">
+            <thead>
+              <tr>
+                <th>Folio Sec</th>
+                <th>Status</th>
+                <th>NOM</th>
+                <th>Acreditación</th>
+                <th>RFC</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Marca</th>
+                <th>Producto</th>
+              </tr>
+            </thead>
+            <tbody id="modalPartidas"></tbody>
+          </table>
+        </div>
+        <div class="partidas-count" id="modalPartidasCount"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cerrar-modal" onclick="cerrarDetalle()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function descargarPDF(tipo, fila) {
+  const url = `documentos/${tipo}_fila${fila}.pdf`;
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${tipo}_${fila}.pdf`;
+  a.click();
+}
+
+function descargarZIP(fila) {
+  // Aquí se conectaría con la URL real del ZIP del folio
+  const folio = String(2419 - fila).padStart(6, '0');
+  const url = `documentos/folio_${folio}.zip`;
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `documentacion_${folio}.zip`;
+  a.click();
+}
+
+function filtrarTabla() {
+  const folio = document.getElementById('filtroFolio').value.toLowerCase();
+  const pedimento = document.getElementById('filtroPedimento').value.toLowerCase();
+  const cliente = document.getElementById('filtroCliente').value.toLowerCase();
+  const estatus = document.getElementById('filtroEstatus').value;
+  const fechaDesde = document.getElementById('filtroFechaDesde').value;
+  const fechaHasta = document.getElementById('filtroFechaHasta').value;
+  const registros = document.getElementById('filtroRegistros').value;
+  const filas = document.querySelectorAll('.table tbody tr');
+  let visibles = 0;
+  const maxFilas = registros === 'all' ? Infinity : parseInt(registros);
+
+  filas.forEach(fila => {
+    const celdas = fila.querySelectorAll('td');
+    if (celdas.length === 0) return;
+
+    const folioText = celdas[0].textContent.trim().toLowerCase();
+    const fechaText = celdas[1].textContent.trim();
+    const clienteText = celdas[3].textContent.trim().toLowerCase();
+    const pedimentoText = celdas[4].textContent.trim().toLowerCase();
+    const filaEstatus = fila.getAttribute('data-estatus');
+
+    let visible = true;
+
+    if (folio && !folioText.includes(folio)) visible = false;
+    if (pedimento && !pedimentoText.includes(pedimento)) visible = false;
+    if (cliente && !clienteText.includes(cliente)) visible = false;
+    if (estatus && filaEstatus !== estatus) visible = false;
+
+    // Filtro por fecha
+    if (fechaDesde || fechaHasta) {
+      const match = fechaText.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+      if (match) {
+        const filaDate = `${match[3]}-${match[2]}-${match[1]}`;
+        if (fechaDesde && filaDate < fechaDesde) visible = false;
+        if (fechaHasta && filaDate > fechaHasta) visible = false;
+      }
+    }
+
+    if (visible && visibles >= maxFilas) visible = false;
+
+    fila.style.display = visible ? '' : 'none';
+    if (visible) visibles++;
+  });
+
+  document.querySelector('.toolbar div').textContent = 'Mostrando: ' + visibles;
+}
+
+function limpiarFiltros() {
+  document.getElementById('filtroCliente').value = '';
+  document.getElementById('filtroFolio').value = '';
+  document.getElementById('filtroPedimento').value = '';
+  document.getElementById('filtroFechaDesde').value = '';
+  document.getElementById('filtroFechaHasta').value = '';
+  document.getElementById('filtroEstatus').value = '';
+  document.getElementById('filtroRegistros').value = 'all';
+  const filas = document.querySelectorAll('.table tbody tr');
+  filas.forEach(fila => fila.style.display = '');
+  document.querySelector('.toolbar div').textContent = 'Mostrando: ' + filas.length;
+}
+
+// Ejecutar filtro inicial al cargar
+window.addEventListener('DOMContentLoaded', filtrarTabla);
+
+function toggleSimbologia(btn) {
+  btn.classList.toggle('active');
+  const simbologia = document.getElementById('simbologiaBlock');
+  if (simbologia) {
+    if (btn.classList.contains('active')) {
+      simbologia.style.display = 'none';
+    } else {
+      simbologia.style.display = '';
+    }
+  }
+}
+
+function abrirDetalle(idx) {
+  const folio = String(2419 - idx).padStart(6, '0');
+  const clientes = ['CEYS MEXICANA SA DE CV','INDUSTRIAS POLAR SA','GRUPO BIMBO SAB','CEMEX SAB DE CV','FEMSA SA DE CV','ALFA SAB DE CV','GRUMA SAB DE CV'];
+  const cliente = clientes[idx % clientes.length];
+
+  document.getElementById('modalTitulo').textContent = 'Detalle del folio ' + folio;
+  const partidasBody = document.getElementById('modalPartidas');
+  partidasBody.innerHTML = '';
+  const numPartidas = (idx % 3) + 1;
+  for (let p = 1; p <= numPartidas; p++) {
+    partidasBody.innerHTML += `
+      <tr>
+        <td>0492624${folio.slice(-2)}-${p}</td>
+        <td><span class="badge-activo">Activo</span></td>
+        <td>NOM-050-SCFI-2004</td>
+        <td>UVNOM 049</td>
+        <td>RBO910102QJ9</td>
+        <td>${cliente}</td>
+        <td>1</td>
+        <td>DREMEL</td>
+        <td>2610031552${p}</td>
+      </tr>`;
+  }
+  document.getElementById('modalPartidasCount').textContent = 'Número de Folios: ' + numPartidas;
+  document.getElementById('modalDetalle').classList.add('active');
+}
+
+function cerrarDetalle() {
+  document.getElementById('modalDetalle').classList.remove('active');
+}
+
+// Cerrar modal con Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') cerrarDetalle();
+});
+// Cerrar modal al clic fueras
+document.getElementById('modalDetalle').addEventListener('click', function(e) {
+  if (e.target === this) cerrarDetalle();
+});
+</script>
+
+<script>
+// Solo el botón con el ojo despliega el menú contextual
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.menu').forEach(function(menu) {
+    const trigger = menu.querySelector('.menu-trigger');
+    const dropdown = menu.querySelector('.dropdown');
+    if (trigger && dropdown) {
+      trigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        // Cierra otros menús
+        document.querySelectorAll('.menu.open').forEach(m => { if (m !== menu) m.classList.remove('open'); });
+        menu.classList.toggle('open');
+      });
+    }
+  });
+  // Cerrar menú al hacer click fuera
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.menu.open').forEach(m => m.classList.remove('open'));
+  });
+});
+</script>
+
+</body>
+</html>

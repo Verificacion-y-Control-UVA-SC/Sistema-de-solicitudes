@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualización de Layout</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="modal-layout.css">
+</head>
+<body>
+
+    <!-- Botón de demostración para abrir el modal -->
+    <button class="btn-abrir-modal-layout" id="btnAbrirModalLayout">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+        </svg>
+        Actualización de Layout
+    </button>
+
+    <!-- Overlay + Modal Layout -->
+    <div class="modal-layout-overlay" id="modalLayoutOverlay">
+        <div class="modal-layout">
+            <!-- Barra de progreso animada -->
+            <div class="modal-layout-progress-bar"></div>
+
+            <!-- Header -->
+            <div class="modal-layout-header">
+                <div class="modal-layout-header-titulo">
+                    <span class="icono-update">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        <span class="update-ring"></span>
+                    </span>
+                    Actualización de Layout
+                </div>
+                <button class="btn-cerrar-x-layout" id="btnCerrarXLayout" aria-label="Cerrar">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-layout-body">
+                <div class="layout-icon-container">
+                    <div class="layout-circle">
+                        <svg class="layout-svg" viewBox="0 0 52 52">
+                            <circle class="layout-circle-bg" cx="26" cy="26" r="24"/>
+                            <line class="layout-info-icon" x1="26" y1="18" x2="26" y2="32"/>
+                            <circle class="layout-info-dot" cx="26" cy="36" r="2"/>
+                        </svg>
+                    </div>
+                </div>
+                <p class="layout-titulo">No se recibe cambios de Layout, cuando el folio ya tiene un corte de sistema.</p>
+                <p class="layout-detalle">Verifica el estado del folio antes de realizar cambios.</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-layout-footer">
+                <button class="btn-aceptar-layout" id="btnAceptarLayout">
+                    Aceptar
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="modal-layout.js"></script>
+</body>
+</html>

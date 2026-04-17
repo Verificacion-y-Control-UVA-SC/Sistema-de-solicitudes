@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión V&C - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f7;
+            overflow: hidden;
+            position: relative;
+        }
+
+
+
+        /* Main container */
+        .login-wrapper {
+            display: flex;
+            width: 960px;
+            max-width: 95vw;
+            min-height: 600px;
+            border-radius: 28px;
+            overflow: hidden;
+            animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative;
+            z-index: 10;
+            gap: 0;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Left side - Liquid Glass form */
+        .login-form-section {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: none;
+            padding: 55px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-radius: 28px 0 0 28px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Liquid Glass shimmer */
+        .login-form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.8);
+            pointer-events: none;
+        }
+
+        .login-form-section::after {
+            display: none;
+        }
+
+        .brand {
+            margin-bottom: 8px;
+            animation: fadeIn 0.7s ease 0.3s both;
+        }
+
+        .brand-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #282828;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.5;
+        }
+
+        .login-title {
+            font-size: 30px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+            animation: fadeIn 0.7s ease 0.4s both;
+            letter-spacing: -0.5px;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.4);
+            margin-bottom: 38px;
+            animation: fadeIn 0.7s ease 0.5s both;
+            font-weight: 400;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            animation: fadeIn 0.6s ease both;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.5s; }
+        .form-group:nth-child(2) { animation-delay: 0.6s; }
+        .form-group:nth-child(3) { animation-delay: 0.7s; }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.45);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper > i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ECD925;
+            font-size: 14px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 2;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 16px 15px 44px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 14px;
+            color: #1a1a1a;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(0, 0, 0, 0.25);
+        }
+
+        .form-group input:focus {
+            border-color: rgba(0, 120, 255, 0.3);
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 
+                0 4px 20px rgba(0, 120, 255, 0.08),
+                0 0 0 4px rgba(0, 120, 255, 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input:focus ~ i {
+            color: #d4c220;
+        }
+
+        .input-wrapper .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #ECD925;
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.3s ease;
+            left: auto;
+            z-index: 2;
+        }
+
+        .input-wrapper .toggle-password:hover {
+            color: #d4c220;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            animation: fadeIn 0.6s ease 0.8s both;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .remember-me input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid rgba(0, 0, 0, 0.15);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(4px);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .remember-me input[type="checkbox"]:checked {
+            background: #007aff;
+            border-color: #007aff;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+        }
+
+        .remember-me input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .remember-me span {
+            font-size: 13px;
+            color: rgba(0, 0, 0, 0.45);
+            font-weight: 400;
+        }
+
+        .forgot-password {
+            font-size: 13px;
+            color: #007aff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .forgot-password:hover {
+            color: #005ecb;
+            text-decoration: underline;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: rgba(236, 217, 37, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 14px;
+            color: #1a1a1a;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.6s ease 0.9s both;
+            letter-spacing: 0.3px;
+            box-shadow: 
+                0 4px 16px rgba(236, 217, 37, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 30px rgba(236, 217, 37, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.7);
+            background: rgba(236, 217, 37, 0.9);
+        }
+
+        .btn-submit:hover::before {
+            left: 100%;
+        }
+
+        .btn-submit:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 13px;
+            color: rgba(0, 0, 0, 0.35);
+            animation: fadeIn 0.6s ease 1s both;
+        }
+
+        .footer-text a {
+            color: #007aff;
+            text-decoration: none;
+            font-weight: 300;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Right side - Liquid Glass panel */
+        .login-info-section {
+            width: 400px;
+            background: rgba(236, 217, 37, 0.65);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: none;
+            border-radius: 0 28px 28px 0;
+            padding: 55px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                inset 1px 0 0 rgba(255, 255, 255, 0.3);
+        }
+
+        /* Liquid glass reflection on panel */
+        .login-info-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.6);
+            pointer-events: none;
+        }
+
+        .login-info-section::after {
+            display: none;
+        }
+
+        .login-info-section img {
+            max-width: 180px;
+            max-height: 180px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+        }
+
+        .version-tag {
+            position: absolute;
+            bottom: 20px;
+            font-size: 11px;
+            color: rgba(0, 0, 0, 0.25);
+            letter-spacing: 1.5px;
+            font-weight: 500;
+        }
+
+        /* Divider glow line */
+        .glass-divider {
+            position: absolute;
+            left: 0;
+            top: 10%;
+            bottom: 10%;
+            width: 1px;
+            background: linear-gradient(180deg, transparent, rgba(255,255,255,0.3), rgba(255,255,255,0.15), transparent);
+            z-index: 2;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-wrapper {
+                flex-direction: column;
+                width: 95vw;
+                min-height: auto;
+            }
+
+            .login-form-section {
+                border-radius: 28px 28px 0 0;
+                padding: 40px 30px;
+            }
+
+            .login-info-section {
+                width: 100%;
+                border-radius: 0 0 28px 28px;
+                padding: 35px 30px;
+            }
+
+            .login-info-section img {
+                max-width: 120px;
+                max-height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <!-- Left: Login Form -->
+        <div class="login-form-section">
+            
+            <h1 class="login-title">Iniciar Sesión</h1>
+            <p class="login-subtitle">Accede al sistema de gestión</p>
+
+            <form id="loginForm" autocomplete="off">
+                <div class="form-group">
+                    <label>Usuario</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="username" placeholder="Ingresa tu usuario" required>
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" placeholder="••••••••••••" required>
+                        <i class="fa-solid fa-lock"></i>
+                        <button type="button" class="toggle-password" onclick="togglePassword()">
+                            <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+
+                <button type="submit" class="btn-submit">Ingresar</button>
+            </form>
+
+            <p class="footer-text">
+                ¿Necesitas ayuda? <a href="#">Contacta al administrador</a>
+            </p>
+        </div>
+
+        <!-- Right: Info Panel with Logo -->
+        <div class="login-info-section">
+            <div class="glass-divider"></div>
+            <img src="img/logo.png" alt="V&C Logo">
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Form submit with liquid glass feedback
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('.btn-submit');
+            btn.textContent = 'Ingresando...';
+            btn.style.pointerEvents = 'none';
+            btn.style.background = 'rgba(236, 217, 37, 0.95)';
+            setTimeout(() => {
+                btn.textContent = 'Ingresar';
+                btn.style.pointerEvents = 'auto';
+                btn.style.background = 'rgba(236, 217, 37, 0.75)';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
